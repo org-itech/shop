@@ -13,17 +13,11 @@ import javax.validation.constraints.NotBlank;
 @IdClass(CartProductId.class)
 public class CartProduct {
     @Id
-    @NotBlank
-    @Column(length = 36)
-    private String cartId;
+    @ManyToOne
+    private Cart cart;
 
     @Id
-    @NotBlank
-    @Column(length = 36)
-    private String productId;
-
     @ManyToOne
-    @JoinColumn(name = "productId", insertable = false, updatable = false)
     private Product product;
 
     private Integer quantity;

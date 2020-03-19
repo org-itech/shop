@@ -17,7 +17,7 @@ public class Cart extends AbstractEntity {
     @OneToOne
     private User user;
 
-    @OneToMany(mappedBy = "cartId", cascade = CascadeType.REMOVE)
+    @OneToMany(mappedBy = "cart", cascade = CascadeType.REMOVE)
     private List<CartProduct> products;
 
     @Transient
