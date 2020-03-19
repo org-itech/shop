@@ -5,6 +5,7 @@ import lombok.Setter;
 import org.springframework.data.domain.Persistable;
 
 import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.MappedSuperclass;
 import java.util.Objects;
@@ -14,7 +15,7 @@ import java.util.Objects;
 @MappedSuperclass
 public class AbstractEntity implements Persistable<Long> {
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @Override
