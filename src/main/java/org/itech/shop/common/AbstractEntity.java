@@ -2,21 +2,21 @@ package org.itech.shop.common;
 
 import lombok.Getter;
 import lombok.Setter;
+import org.hibernate.annotations.GenericGenerator;
 import org.springframework.data.domain.Persistable;
 
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.MappedSuperclass;
+import javax.persistence.*;
 import java.util.Objects;
 
 @Getter
 @Setter
 @MappedSuperclass
-public class AbstractEntity implements Persistable<Long> {
+public class AbstractEntity implements Persistable<String> {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    @GeneratedValue(generator = "uuid")
+    @GenericGenerator(name = "uuid", strategy = "uuid2")
+    @Column(length = 36, nullable = false)
+    private String id;
 
     @Override
     public boolean isNew() {
