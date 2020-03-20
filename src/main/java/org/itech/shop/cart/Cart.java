@@ -24,12 +24,12 @@ public class Cart extends AbstractEntity {
     @OneToOne
     private User user;
 
-    @OneToMany(mappedBy = "cart", cascade = CascadeType.REMOVE)
+    @OneToMany(mappedBy = "cart", cascade = CascadeType.ALL)
     private List<CartProduct> products = new ArrayList<>();
 
     @Transient
     public float getTotalPrice() {
-        return Double.valueOf(this.products.stream().mapToDouble(f -> f.getProduct().getPrice()).sum()).floatValue();
+        return Double.valueOf(this.products.stream().mapToDouble(f -> f.getProduct().getPrice() * f.getQuantity()).sum()).floatValue();
     }
 
     public void addProduct(Product product) {

@@ -1,6 +1,8 @@
 package org.itech.shop.product;
 
+import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.Column;
@@ -10,9 +12,15 @@ import javax.validation.constraints.Size;
 @Getter
 @Setter
 @Entity
+@NoArgsConstructor
 public class Apparal extends Product {
-    public Apparal() {
-        super(ProductCategory.APPARAL);
+    @Builder
+    public Apparal(Integer productId, String prodName, float price, String type, String brand, String design) {
+        super(ProductCategory.APPARAL, productId, prodName, price);
+
+        this.type = type;
+        this.brand = brand;
+        this.design = design;
     }
 
     @Size(max = 32)
