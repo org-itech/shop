@@ -6,9 +6,11 @@ import lombok.Setter;
 import org.itech.shop.cart.Cart;
 import org.itech.shop.common.AbstractEntity;
 import org.itech.shop.product.Product;
+import org.springframework.util.Assert;
 
 import javax.persistence.*;
 import javax.validation.constraints.Size;
+import java.util.Map;
 
 @Getter
 @Setter
@@ -26,6 +28,27 @@ public class User extends AbstractEntity {
 
     @OneToOne(mappedBy = "user", cascade = CascadeType.ALL)
     private Cart cart;
+
+    public Cart updateCartProducts(Map<Product, Integer> products) {
+        Cart cart = this.getCart();
+
+        if (cart == null) {
+            cart = new Cart(this);
+            this.setCart(cart);
+        } else {
+            cart.clearProducts();
+        }
+
+        for (Map.Entry<Product, Integer> kvp : products.entrySet()) {
+            Assert.isTrue(kvp.getValue() != null && kvp.getValue() >= 0, "quantity should not be negative!");
+
+            if (kvp.getValue() > 0) {
+                cart.addProduct(kvp.getKey(), kvp.getValue());
+            }
+        }
+
+        return cart;
+    }
 
     public Cart addProductToCart(Product product) {
         Cart cart = this.getCart();
@@ -58,9 +81,5 @@ public class User extends AbstractEntity {
         }
 
         return cart;
-    }
-
-    public void setCart(Cart cart) {
-        this.cart = cart;
     }
 }

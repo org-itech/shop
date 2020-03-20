@@ -33,7 +33,11 @@ public class Cart extends AbstractEntity {
     }
 
     public void addProduct(Product product) {
-        CartProduct cartProduct = new CartProduct(new CartProductId(this, product));
+        this.addProduct(product, 1);
+    }
+
+    public void addProduct(Product product, Integer quantity) {
+        CartProduct cartProduct = new CartProduct(new CartProductId(this, product), quantity);
 
         int idx = this.getProducts().indexOf(cartProduct);
 

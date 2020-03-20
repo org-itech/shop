@@ -1,6 +1,5 @@
 package org.itech.shop;
 
-import org.itech.shop.cart.Cart;
 import org.itech.shop.product.*;
 import org.itech.shop.user.User;
 import org.itech.shop.user.UserRepository;
@@ -12,12 +11,14 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.annotation.Rollback;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 @SpringBootTest
 @Transactional
-@Rollback(value = false)
+@Rollback
 class ShopApplicationTests {
     @Autowired
     private UserRepository userRepository;
@@ -114,15 +115,16 @@ class ShopApplicationTests {
 
         Assertions.assertTrue(user.getCart().getProducts().size() == 1);
 
-        // update cart
-        Cart cart = user.getCart();
+        // update products quantity
+        Map<Product, Integer> productMap = new HashMap<>(2);
 
-        cart.getProducts().forEach(item -> item.setQuantity(5));
+        productMap.put(book, 5);
+        productMap.put(apparal, 10);
 
-        user.setCart(cart);
+        user.updateCartProducts(productMap);
 
         // get cart total price
-        Assertions.assertTrue(user.getCart().getTotalPrice() == 15 * 5f);
+        Assertions.assertTrue(user.getCart().getTotalPrice() == ((15 * 5f) + (10 * 50f)));
 
         // empty cart
         user.emptyCart();

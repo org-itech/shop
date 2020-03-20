@@ -8,7 +8,6 @@ import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.IdClass;
 import javax.persistence.ManyToOne;
-import javax.validation.constraints.Min;
 import java.util.Objects;
 
 @Getter
@@ -20,9 +19,13 @@ public class CartProduct {
     }
 
     public CartProduct(CartProductId id) {
+        this(id, 1);
+    }
+
+    public CartProduct(CartProductId id, Integer quantity) {
         this.cart = id.getCart();
         this.product = id.getProduct();
-        this.quantity = 1;
+        this.quantity = quantity;
     }
 
     @Id
@@ -33,7 +36,6 @@ public class CartProduct {
     @ManyToOne
     private Product product;
 
-    @Min(value = 0)
     private Integer quantity;
 
     public CartProductId getId() {
