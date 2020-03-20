@@ -4,14 +4,24 @@ import lombok.Getter;
 import lombok.Setter;
 import org.itech.shop.product.Product;
 
-import javax.persistence.*;
-import javax.validation.constraints.NotBlank;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.IdClass;
+import javax.persistence.ManyToOne;
 
 @Getter
 @Setter
 @Entity
 @IdClass(CartProductId.class)
 public class CartProduct {
+    public CartProduct() {
+    }
+
+    public CartProduct(CartProductId id) {
+        this.cart = id.getCart();
+        this.product = id.getProduct();
+    }
+
     @Id
     @ManyToOne
     private Cart cart;
