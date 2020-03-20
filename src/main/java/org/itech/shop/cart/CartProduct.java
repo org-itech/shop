@@ -8,6 +8,7 @@ import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.IdClass;
 import javax.persistence.ManyToOne;
+import javax.validation.constraints.Min;
 import java.util.Objects;
 
 @Getter
@@ -32,6 +33,7 @@ public class CartProduct {
     @ManyToOne
     private Product product;
 
+    @Min(value = 0)
     private Integer quantity;
 
     public CartProductId getId() {

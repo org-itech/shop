@@ -6,6 +6,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.Column;
+import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
 import javax.validation.constraints.Size;
 
@@ -13,10 +14,11 @@ import javax.validation.constraints.Size;
 @Setter
 @Entity
 @NoArgsConstructor
+@DiscriminatorValue(value = ProductCategories.BOOK)
 public class Book extends Product {
     @Builder
     public Book(Integer productId, String prodName, float price, String genre, String author, String publications) {
-        super(ProductCategory.BOOK, productId, prodName, price);
+        super(ProductCategories.BOOK, productId, prodName, price);
 
         this.genre = genre;
         this.author = author;

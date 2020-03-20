@@ -50,7 +50,7 @@ public class User extends AbstractEntity {
         return cart;
     }
 
-    public Cart emptyCard() {
+    public Cart emptyCart() {
         Cart cart = this.getCart();
 
         if (cart != null) {
@@ -58,5 +58,9 @@ public class User extends AbstractEntity {
         }
 
         return cart;
+    }
+
+    public void setCart(Cart cart) {
+        this.cart = cart;
     }
 }

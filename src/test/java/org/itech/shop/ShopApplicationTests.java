@@ -1,5 +1,6 @@
 package org.itech.shop;
 
+import org.itech.shop.cart.Cart;
 import org.itech.shop.product.*;
 import org.itech.shop.user.User;
 import org.itech.shop.user.UserRepository;
@@ -8,6 +9,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.annotation.Rollback;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
@@ -15,6 +17,7 @@ import java.util.Optional;
 
 @SpringBootTest
 @Transactional
+@Rollback(value = false)
 class ShopApplicationTests {
     @Autowired
     private UserRepository userRepository;
@@ -62,13 +65,13 @@ class ShopApplicationTests {
         Assertions.assertTrue("manne".equals(user.getName()));
 
         // query product by category
-        List<Product> books = productRepository.findByCategory(ProductCategory.BOOK);
+        List<Product> books = productRepository.findByCategory(ProductCategories.BOOK);
 
-        Assertions.assertTrue(books.size() == 1 && books.get(0).getCategory() == ProductCategory.BOOK && books.get(0).getProductId() == 9781409);
+        Assertions.assertTrue(books.size() == 1 && books.get(0).getCategory() == ProductCategories.BOOK && books.get(0).getProductId() == 9781409);
 
-        List<Product> apparals = productRepository.findByCategory(ProductCategory.APPARAL);
+        List<Product> apparals = productRepository.findByCategory(ProductCategories.APPARAL);
 
-        Assertions.assertTrue(apparals.size() == 1 && apparals.get(0).getCategory() == ProductCategory.APPARAL && apparals.get(0).getProductId() == 9781450);
+        Assertions.assertTrue(apparals.size() == 1 && apparals.get(0).getCategory() == ProductCategories.APPARAL && apparals.get(0).getProductId() == 9781450);
 
         // query product by productId
         Optional<Product> opBook = productRepository.findByProductId(9781409);
@@ -111,7 +114,19 @@ class ShopApplicationTests {
 
         Assertions.assertTrue(user.getCart().getProducts().size() == 1);
 
+        // update cart
+        Cart cart = user.getCart();
+
+        cart.getProducts().forEach(item -> item.setQuantity(5));
+
+        user.setCart(cart);
+
         // get cart total price
-        Assertions.assertTrue(user.getCart().getTotalPrice() == 30f);
+        Assertions.assertTrue(user.getCart().getTotalPrice() == 15 * 5f);
+
+        // empty cart
+        user.emptyCart();
+
+        Assertions.assertTrue(user.getCart().getProducts().isEmpty());
     }
 }

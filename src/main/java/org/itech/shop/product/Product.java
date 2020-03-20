@@ -15,12 +15,14 @@ import javax.validation.constraints.Size;
 @Entity
 @AllArgsConstructor
 @NoArgsConstructor
+@DiscriminatorColumn(name = "category")
 @NamedQuery(name = "Product.findByProductId", query = "select p from Product p where p.productId = ?1")
 @NamedQuery(name = "Product.findByCategory", query = "select p from Product p where p.category = ?1")
 @NamedQuery(name = "Product.findByProdName", query = "select p from Product p where p.prodName = ?1")
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 public class Product extends AbstractEntity {
-    private ProductCategory category;
+    @Column(insertable = false, updatable = false)
+    private String category;
 
     @NotNull
     private Integer productId;
