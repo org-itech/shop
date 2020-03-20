@@ -7,8 +7,8 @@ import org.itech.shop.product.Product;
 import org.itech.shop.user.User;
 
 import javax.persistence.*;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.ArrayList;
+import java.util.List;
 
 @Getter
 @Setter
@@ -25,7 +25,7 @@ public class Cart extends AbstractEntity {
     private User user;
 
     @OneToMany(mappedBy = "cart", cascade = CascadeType.REMOVE)
-    private Set<CartProduct> products = new HashSet<>();
+    private List<CartProduct> products = new ArrayList<>();
 
     @Transient
     public float getTotalPrice() {
@@ -35,12 +35,28 @@ public class Cart extends AbstractEntity {
     public void addProduct(Product product) {
         CartProduct cartProduct = new CartProduct(new CartProductId(this, product));
 
-        if (this.getProducts().contains(cartProduct)) {
+        int idx = this.getProducts().indexOf(cartProduct);
 
+        if (idx >= 0) {
+            this.getProducts().get(idx).increaseQuantity();
+        } else {
+            this.products.add(cartProduct);
         }
     }
 
     public void removeProduct(Product product) {
+        CartProduct cartProduct = new CartProduct(new CartProductId(this, product));
 
+        int idx = this.getProducts().indexOf(cartProduct);
+
+        if (idx >= 0) {
+            if (this.getProducts().get(idx).decrementQuantity() == 0) {
+                this.getProducts().remove(idx);
+            }
+        }
+    }
+
+    public void clearProducts() {
+        this.getProducts().clear();
     }
 }

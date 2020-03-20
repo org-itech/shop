@@ -5,14 +5,15 @@ spring:
     database: MYSQL
     show-sql: true
     generate-ddl: true
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.MySQL8Dialect
   datasource:
     platform: mysql
     url: jdbc:mysql://localhost:3306/shop?useUnicode=true&characterEncoding=UTF-8&useSSL=false&serverTimezone=GMT%2B8
     username: root
     password: 123456
     driver-class-name: com.mysql.cj.jdbc.Driver
-    initialization-mode: always
-    sql-script-encoding: utf-8
     hikari:
       data-source-properties:
         # https://github.com/brettwooldridge/HikariCP/wiki/MySQL-Configuration

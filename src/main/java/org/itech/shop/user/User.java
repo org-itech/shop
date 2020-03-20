@@ -21,8 +21,7 @@ public class User extends AbstractEntity {
         Cart cart = this.getCart();
 
         if (cart == null) {
-            cart = new Cart();
-            cart.setUser(this);
+            cart = new Cart(this);
         }
 
         cart.addProduct(product);
@@ -35,6 +34,16 @@ public class User extends AbstractEntity {
 
         if (cart != null) {
             cart.removeProduct(product);
+        }
+
+        return cart;
+    }
+
+    public Cart emptyCard() {
+        Cart cart = this.getCart();
+
+        if (cart != null) {
+            cart.clearProducts();
         }
 
         return cart;
