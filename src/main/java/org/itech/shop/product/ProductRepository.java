@@ -11,11 +11,17 @@ import java.util.Optional;
 @Repository
 public interface ProductRepository extends JpaRepository<Product, String>, JpaSpecificationExecutor<Product> {
     @Query(name = "Product.findByProductId")
-    Optional<Product> findByProductId(Integer productId);
+    Optional<Product> findOneByProductId(Integer productId);
+
+    @Query(name = "Product.findByProdName")
+    Optional<Product> findOneByProdName(String prodName);
 
     @Query(name = "Product.findByCategory")
     List<Product> findByCategory(String category);
 
+    @Query(name = "Product.findByProductId")
+    List<Product> findByProductId(Integer productId);
+
     @Query(name = "Product.findByProdName")
-    Optional<Product> findByProdName(String prodName);
+    List<Product> findByProdName(String prodName);
 }

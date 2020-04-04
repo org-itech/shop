@@ -73,7 +73,7 @@ class ShopApplicationTests {
         Assertions.assertTrue(apparals.size() == 1 && apparals.get(0).getCategory() == ProductCategories.APPARAL && apparals.get(0).getProductId() == 9781450);
 
         // query product by productId
-        Optional<Product> opBook = productRepository.findByProductId(9781409);
+        Optional<Product> opBook = productRepository.findOneByProductId(9781409);
 
         Assertions.assertTrue(opBook.isPresent());
 
@@ -82,7 +82,7 @@ class ShopApplicationTests {
         Assertions.assertTrue(book instanceof Book && book.getProductId() == 9781409);
 
         // query product by prodName
-        Optional<Product> opApparal = productRepository.findByProdName("Nike Air Force");
+        Optional<Product> opApparal = productRepository.findOneByProdName("Nike Air Force");
 
         Assertions.assertTrue(opApparal.isPresent());
 
